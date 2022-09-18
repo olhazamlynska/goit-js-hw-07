@@ -30,16 +30,18 @@ function onImgClick(event) {
     return;
   }
 
-  const onEscKeyPress = (event) => {
-    if (event.code !== "Escape") {
-      return;
-    }
-    modalShow.close(() => window.removeEventListener("keydown", onEscKeyPress));
-  };
-
   const modalShow = basicLightbox.create(`
     <img src="${event.target.dataset.source}" width="800" height="600">
 `);
+
+  const onEscKeyPress = (event) => {
+    const KEY_ESCAPE_CODE = "Escape";
+    if (event.code === KEY_ESCAPE_CODE && modalShow.visible()) {
+      modalShow.close(() =>
+        window.removeEventListener("keydown", onEscKeyPress)
+      );
+    }
+  };
 
   modalShow.show(window.addEventListener("keydown", onEscKeyPress));
 }
